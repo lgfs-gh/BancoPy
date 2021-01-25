@@ -58,7 +58,7 @@ def setup() -> None:
 def menu() -> None:
     if admin == 2:
         print('\n>>> Selecione uma opção através do código numérico:\n'
-              '0) Ver conta'
+              '0) Ver conta\n'
               '1) Listar contas\n'
               '2) Criar conta\n'
               '3) Efetuar saque\n'
@@ -69,12 +69,12 @@ def menu() -> None:
               '8) Sair do sistema\n')
     else:
         print('\n>>> Selecione uma opção através do código numérico:\n'
-              '0) Ver conta'
+              '0) Ver conta\n'
               '1) Efetuar saque\n'
               '2) Efetuar deposito\n'
               '3) Efetuar transferência\n'
               '4) Aumentar limite\n'
-              '5) Pagar fatura'
+              '5) Pagar fatura\n'
               '6) Sair do sistema\n')
 
     escolha: int = int(input('>>> DIGITE O CÓDIGO NUMÉRICO: '))
@@ -128,7 +128,7 @@ def menu() -> None:
 
 
 def criar_conta() -> None:
-    print('-------------------------- Criando conta --------------------------')
+    print('\n-------------------------- Criando conta --------------------------')
     nome: str = str(input('>>> Digite o nome: '))
     email: str = str(input('>>> Digite o e-mail: '))
     cpf: str = str(input('>>> Digite o CPF: '))
@@ -139,7 +139,7 @@ def criar_conta() -> None:
         conta: Conta = Conta(cliente)
         numero_sua_conta = conta.numero
         contas.append(conta)
-        print('---- CONTA CADASTRADA COM SUCESSO')
+        print('---- CONTA CADASTRADA COM SUCESSO\n')
         print(cliente)
         print(conta)
         sleep(1)
@@ -319,6 +319,7 @@ def ver_conta() -> None:
         if conta:
             if admin == 1:
                 if numero == numero_sua_conta:
+                    print('')
                     print(conta)
                     sleep(1)
                     menu()
@@ -328,6 +329,7 @@ def ver_conta() -> None:
                     sleep(1)
                     menu()
             if admin == 2:
+                print('')
                 print(conta)
                 sleep(1)
                 menu()

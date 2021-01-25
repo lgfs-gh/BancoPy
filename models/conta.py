@@ -21,7 +21,7 @@ class Conta:
                f'Saldo Atual: {self.saldo}\n' \
                f'Limite: {self.limite}\n' \
                f'Saldo Total: {formata_moeda(self.saldo_total)}\n' \
-               f'Fatura: {-1 * (formata_moeda(self.fatura))}'
+               f'Fatura: {(formata_moeda(-1 * self.fatura))}\n'
 
     @property
     def numero(self: object) -> int:
@@ -127,10 +127,11 @@ class Conta:
             print('### VALOR DEVE SER DIFERENTE DE ZERO E ACIMA DO LIMITE ATUAL ###')
 
     def pagar_fatura(self):
-        if self.saldo >= self.fatura:
-            self.saldo = self.saldo - self.fatura
+        if self.saldo >= (-1 * self.fatura):
+            self.saldo = self.saldo + self.fatura
             self.fatura = 0
             self.limite = self.limite_max
+            self.saldo_total = self._calcula_saldo_total
             print('-------- FATURA PAGA COM SUCESSO / LIMITE RESTAURADO --------')
         else:
             print('### ERRO: SALDO INSUFICIENTE ###')
