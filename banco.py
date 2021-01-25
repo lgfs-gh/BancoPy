@@ -58,22 +58,30 @@ def setup() -> None:
 def menu() -> None:
     if admin == 2:
         print('\n>>> Selecione uma opção através do código numérico:\n'
+              '0) Ver conta'
               '1) Listar contas\n'
               '2) Criar conta\n'
               '3) Efetuar saque\n'
               '4) Efetuar deposito\n'
               '5) Efetuar transferência\n'
               '6) Aumentar limite\n'
-              '7) Sair do sistema\n')
+              '7) Pagar fatura\n'
+              '8) Sair do sistema\n')
     else:
         print('\n>>> Selecione uma opção através do código numérico:\n'
+              '0) Ver conta'
               '1) Efetuar saque\n'
               '2) Efetuar deposito\n'
               '3) Efetuar transferência\n'
               '4) Aumentar limite\n'
-              '5) Sair do sistema\n')
-    escolha = int(input('>>> DIGITE O CÓDIGO NUMÉRICO: '))
-    if escolha == 1:
+              '5) Pagar fatura'
+              '6) Sair do sistema\n')
+
+    escolha: int = int(input('>>> DIGITE O CÓDIGO NUMÉRICO: '))
+
+    if escolha == 0:
+        ver_conta()
+    elif escolha == 1:
         if admin == 2:
             listar_contas()
         else:
@@ -97,13 +105,18 @@ def menu() -> None:
         if admin == 2:
             efetuar_transferencia()
         else:
+            pagar_fatura()
+    elif escolha == 6 and admin == 2:
+        if admin == 2:
+            aumentar_limite()
+        else:
             print('----------------- SISTEMA FECHANDO -----------------')
             sleep(1)
             print('----------------------- FIM ------------------------')
             exit(0)
-    elif escolha == 6 and admin == 2:
-        aumentar_limite()
     elif escolha == 7 and admin == 2:
+        pagar_fatura()
+    elif escolha == 8 and admin ==2:
         print('----------------- SISTEMA FECHANDO -----------------')
         sleep(1)
         print('----------------------- FIM ------------------------')
@@ -262,7 +275,6 @@ def aumentar_limite() -> None:
             print(f'Não foi encontrada a conta com número: {numero}')
             sleep(1)
             menu()
-
     else:
         print('### Ainda não existem contas cadastradas ###')
         sleep(1)
@@ -270,11 +282,64 @@ def aumentar_limite() -> None:
 
 
 def pagar_fatura() -> None:
-    pass
+    if len(contas) > 0:
+        numero: int = int(input('>>> Informe o número da sua conta: '))
+        conta: Conta = buscar_conta_por_codigo(numero)
+
+        if conta:
+            if admin == 1:
+                if numero == numero_sua_conta:
+                    conta.pagar_fatura()
+                    sleep(1)
+                    menu()
+                else:
+                    print('### VOCÊ SÓ PODE PAGAR A FATURA DA SUA CONTA ###')
+                    print(f'### O NÚMERO DA SUA CONTA É {numero_sua_conta} ###')
+                    sleep(1)
+                    menu()
+            if admin == 2:
+                conta.pagar_fatura()
+                sleep(1)
+                menu()
+        else:
+            print(f'Não foi encontrada a conta com número: {numero}')
+            sleep(1)
+            menu()
+    else:
+        print('### Ainda não existem contas cadastradas ###')
+        sleep(1)
+        menu()
 
 
 def ver_conta() -> None:
-    pass
+    if len(contas) > 0:
+        numero: int = int(input('>>> Informe o número da sua conta: '))
+        conta: Conta = buscar_conta_por_codigo(numero)
+
+        if conta:
+            if admin == 1:
+                if numero == numero_sua_conta:
+                    print(conta)
+                    sleep(1)
+                    menu()
+                else:
+                    print('### VOCÊ SÓ PODE VER A SUA CONTA ###')
+                    print(f'### O NÚMERO DA SUA CONTA É {numero_sua_conta} ###')
+                    sleep(1)
+                    menu()
+            if admin == 2:
+                print(conta)
+                sleep(1)
+                menu()
+        else:
+            print(f'Não foi encontrada a conta com número: {numero}')
+            sleep(1)
+            menu()
+
+    else:
+        print('### Ainda não existem contas cadastradas ###')
+        sleep(1)
+        menu()
 
 
 def listar_contas() -> None:

@@ -20,7 +20,8 @@ class Conta:
                f'Cliente: {self.cliente.nome}\n' \
                f'Saldo Atual: {self.saldo}\n' \
                f'Limite: {self.limite}\n' \
-               f'Saldo Total: {formata_moeda(self.saldo_total)}\n'
+               f'Saldo Total: {formata_moeda(self.saldo_total)}\n' \
+               f'Fatura: {-1 * (formata_moeda(self.fatura))}'
 
     @property
     def numero(self: object) -> int:
