@@ -143,7 +143,7 @@ def criar_conta() -> None:
     nome: str = str(input('>>> Digite o nome: '))
     email: str = str(input('>>> Digite o e-mail: '))
     cpf: str = str(input('>>> Digite o CPF: '))
-    data: str = str(input('>>> Digite o data de nascimento: '))
+    data: str = str(input('>>> Digite o data de nascimento (dd/mm/aaaa): '))
     try:
         global numero_sua_conta
         cliente: Cliente = Cliente(nome=nome, email=email, cpf=cpf, data_nascimento=data)
