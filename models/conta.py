@@ -2,6 +2,7 @@ from models.cliente import Cliente
 from utils.helper import formata_moeda
 from stringcolor import *
 
+
 # -------------------------------------------------- CLASSE ------------------------------------------------------------
 class Conta:
     codigo = 100
