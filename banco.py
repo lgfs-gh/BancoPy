@@ -222,7 +222,7 @@ def efetuar_deposito() -> None:
 def efetuar_transferencia() -> None:
     """Chama a função transferir()
     CLIENTES: só podem transferir da própria conta para uma conta destino
-    ADMINISTRADOS: podem transferir de qualquer conta para qualquer conta"""
+    ADMINISTRADORES: podem transferir de qualquer conta para qualquer conta"""
     if len(contas) > 0:
         numero_o: int = int(input('>>> Informe o número da sua conta: '))
         conta_o: Conta = buscar_conta_por_codigo(numero_o)
@@ -270,7 +270,7 @@ def efetuar_transferencia() -> None:
 def aumentar_limite() -> None:
     """Chama a função altera_limite() e passa os parâmetros definidos pelo usuário
     CLIENTES: Só podem aumentar o limite da própria conta e se a fatura estiver zerada
-    ADMINISTRADOS: Podem aumentar o limite de qualquer conta a qualquer momento"""
+    ADMINISTRADORES: Podem aumentar o limite de qualquer conta a qualquer momento"""
     if len(contas) > 0:
         numero: int = int(input('>>> Informe o número da sua conta: '))
         conta: Conta = buscar_conta_por_codigo(numero)
@@ -308,7 +308,7 @@ def aumentar_limite() -> None:
 def pagar_fatura() -> None:
     """Chama a função pagar_fatura() do objeto conta
     MODO CLIENTE: o usuário só poderá pagar a própria fatura
-    DMINISTRADORES: podem pagar qualquer fatura"""
+    ADMINISTRADORES: podem pagar qualquer fatura"""
     if len(contas) > 0:
         numero: int = int(input('>>> Informe o número da sua conta: '))
         conta: Conta = buscar_conta_por_codigo(numero)

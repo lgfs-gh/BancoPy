@@ -2,6 +2,7 @@ from datetime import date
 from utils.helper import date_para_str, str_para_date
 
 
+# ------------------------------------------ CLASSE --------------------------------------------------------------------
 class Cliente:
 
     contador: int = 1000
@@ -15,6 +16,7 @@ class Cliente:
         self.__data_cadastro: date = date.today()
         Cliente.contador += 1
 
+# -------------------------------------------- PROPERTYS ---------------------------------------------------------------
     @property
     def codigo(self: object) -> int:
         return self.__codigo
