@@ -1,7 +1,8 @@
 from models.cliente import Cliente
 from utils.helper import formata_moeda
+from stringcolor import *
 
-
+# -------------------------------------------------- CLASSE ------------------------------------------------------------
 class Conta:
     codigo = 100
 
@@ -23,6 +24,7 @@ class Conta:
                f'Saldo Total: {formata_moeda(self.saldo_total)}\n' \
                f'Fatura: {(formata_moeda(-1 * self.fatura))}\n'
 
+# ------------------------------------------ PROPERTYS -----------------------------------------------------------------
     @property
     def numero(self: object) -> int:
         return self.__numero
@@ -75,29 +77,30 @@ class Conta:
     def _calcula_saldo_total(self: object) -> float:
         return self.saldo + self.limite
 
+# -------------------------------------------- METODOS -----------------------------------------------------------------
     def depositar(self: object, valor: float) -> None:
         if valor > 0:
             self.saldo = self.saldo + valor
             self.saldo_total = self._calcula_saldo_total
-            print('-------- DEPOSITO EFETUADO COM SUCESSO --------')
+            print(cs('-------- DEPOSITO EFETUADO COM SUCESSO --------', 'green').bold())
         else:
-            print('### ERRO: TENTE NOVAMENTE ###')
+            print(cs('### ERRO: TENTE NOVAMENTE ###', 'red').bold())
 
     def sacar(self: object, valor: float) -> None:
         if 0 < valor <= self.saldo_total:
             if self.saldo >= valor:
                 self.saldo = self.saldo - valor
                 self.saldo_total = self._calcula_saldo_total
-                print('-------- SAQUE EFETUADO COM SUCESSO --------')
+                print(cs('-------- SAQUE EFETUADO COM SUCESSO --------', 'green').bold())
             else:
                 restante: float = self.saldo - valor
                 self.limite = self.limite + restante
                 self.fatura = self.fatura - (self.limite_max - self.limite)
                 self.saldo = 0
                 self.saldo_total = self._calcula_saldo_total
-                print('-------- SAQUE EFETUADO COM SUCESSO --------')
+                print(cs('-------- SAQUE EFETUADO COM SUCESSO --------', 'green').bold())
         else:
-            print('### ERRO: TENTE NOVAMENTE ###')
+            print(cs('### ERRO: TENTE NOVAMENTE ###', 'red').bold())
 
     def transferir(self: object, destino: object, valor: float) -> None:
         if 0 < valor <= self.saldo_total:
@@ -106,7 +109,7 @@ class Conta:
                 self.saldo_total = self._calcula_saldo_total
                 destino.saldo = destino.saldo + valor
                 destino.saldo_total = destino._calcula_saldo_total
-                print('-------- TRANSFERENCIA EFETUADA COM SUCESSO --------')
+                print(cs('-------- TRANSFERENCIA EFETUADA COM SUCESSO --------', 'green').bold())
             else:
                 restante: float = self.saldo - valor
                 self.limite = self.limite + restante
@@ -115,16 +118,16 @@ class Conta:
                 self.saldo_total = self._calcula_saldo_total
                 destino.saldo = destino.saldo + valor
                 destino.saldo_total = destino._calcula_saldo_total
-                print('-------- TRANSFERENCIA EFETUADA COM SUCESSO --------')
+                print(cs('-------- TRANSFERENCIA EFETUADA COM SUCESSO --------', 'green').bold())
         else:
-            print('### ERRO: TENTE NOVAMENTE ###')
+            print(cs('### ERRO: TENTE NOVAMENTE ###', 'red').bold())
 
     def altera_limite(self: object, valor) -> None:
         if valor > 0 and valor > self.limite_max:
             self.limite_max = valor
-            print('-------- LIMITE ALTERADO COM SUCESSO --------')
+            print(cs('-------- LIMITE ALTERADO COM SUCESSO --------', 'green').bold())
         else:
-            print('### VALOR DEVE SER DIFERENTE DE ZERO E ACIMA DO LIMITE ATUAL ###')
+            print(cs('### VALOR DEVE SER DIFERENTE DE ZERO E ACIMA DO LIMITE ATUAL ###', 'red').bold())
 
     def pagar_fatura(self):
         if self.saldo >= (-1 * self.fatura):
@@ -132,6 +135,6 @@ class Conta:
             self.fatura = 0
             self.limite = self.limite_max
             self.saldo_total = self._calcula_saldo_total
-            print('-------- FATURA PAGA COM SUCESSO / LIMITE RESTAURADO --------')
+            print(cs('-------- FATURA PAGA COM SUCESSO / LIMITE RESTAURADO --------', 'green').bold())
         else:
-            print('### ERRO: SALDO INSUFICIENTE ###')
+            print(cs('### ERRO: SALDO INSUFICIENTE ###', 'red').bold())

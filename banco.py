@@ -1,6 +1,7 @@
 from random import choice, randint
 from typing import List
 from time import sleep
+from stringcolor import *
 
 from models.cliente import Cliente
 from models.conta import Conta
@@ -11,20 +12,24 @@ contas: List[Conta] = []
 
 
 def main() -> None:
+    """Inicia o sistema"""
     setup()
     print('-------------------------------------------------------------------------------------------\n'
-          '========================= EXERCÍCIO - SISTEMA BANCÁRIO ====================================\n'
+          '========================= ' + cs('EXERCÍCIO - SISTEMA BANCÁRIO', 'yellow') + ' '
+          '====================================\n '
           '-------------------------------------------------------------------------------------------')
     if admin == 1:
         criar_conta()
     menu()
 
 
+# ------------------------------------------- SETUP / CONTROLE ---------------------------------------------------------
 def setup() -> None:
+    """Define as configurações iniciais do sistema"""
     loop = True
     global admin
     while loop:
-        admin = int(input('-------> Você deseja iniciar a simulação como:\n'
+        admin = int(input(cs('-------> Você deseja iniciar a simulação como:', 'yellow').bold() + '\n' +
                           '1) CLIENTE\n'
                           '2) ADMINISTRADOR\n'
                           '>>> DIGITE O CÓDIGO NUMÉRICO: '))
@@ -34,30 +39,34 @@ def setup() -> None:
             print('### OPÇÃO INVÁLIDA! ###\n')
     while loop:
         if admin == 2:
-            c_teste = int(input('\n-------> Você deseja que o sistema gere contas teste?\n'
+            c_teste = int(input(cs('\n-------> Você deseja que o sistema gere contas teste?', 'yellow').bold() + '\n' +
                                 '1) SIM\n'
                                 '2) NÃO\n'
                                 '>>> DIGITE O CÓDIGO NUMÉRICO: '))
             if c_teste == 1:
                 quantidade = int(input('>>> Informe a quantidade: '))
                 gerar_contas(quantidade)
-                print(f'-------> FORAM GERADAS {quantidade} CONTAS COM SUCESSO <-------\n')
+                print(cs(f'-------> FORAM GERADAS {quantidade} CONTAS COM SUCESSO <-------\n', 'green').bold())
                 break
             else:
-                print(f'-------> SISTEMA INICIALIZADO SEM CONTAS CADASTRADAS <-------\n')
+                print(cs(f'-------> SISTEMA INICIALIZADO SEM CONTAS CADASTRADAS <-------\n', 'green').bold())
                 break
         else:
-            print('-------> MODO CLIENTE: \n'
+            print(cs('-------> MODO CLIENTE: \n', 'yellow').bold() +
                   '\n>> GERANDO CONTAS TESTES PARA OS TESTES DE TRANSFERÊNCIA!\n')
             gerar_contas(3)
             sleep(1)
-            print('-------> FORAM GERADAS 3 CONTAS COM SUCESSO <-------\n')
+            print(cs('-------> FORAM GERADAS 3 CONTAS COM SUCESSO <-------\n', 'green').bold())
             break
 
 
+# ------------------------------------------------------ MENU ----------------------------------------------------------
 def menu() -> None:
+    """Menu de opções
+    CLIENTES: podem ter acesso as opções que dizem respeito a própria conta
+    ADMINISTRADORES: podem criar e acessar contas e realizar qualquer operação"""
     if admin == 2:
-        print('\n>>> Selecione uma opção através do código numérico:\n'
+        print(cs('\n>>> Selecione uma opção através do código numérico:\n', 'yellow').bold() +
               '0) Ver conta\n'
               '1) Listar contas\n'
               '2) Criar conta\n'
@@ -68,7 +77,7 @@ def menu() -> None:
               '7) Pagar fatura\n'
               '8) Sair do sistema\n')
     else:
-        print('\n>>> Selecione uma opção através do código numérico:\n'
+        print(cs('\n>>> Selecione uma opção através do código numérico:\n', 'yellow').bold() +
               '0) Ver conta\n'
               '1) Efetuar saque\n'
               '2) Efetuar deposito\n'
@@ -110,25 +119,27 @@ def menu() -> None:
         if admin == 2:
             aumentar_limite()
         else:
-            print('----------------- SISTEMA FECHANDO -----------------')
+            print(cs('----------------- SISTEMA FECHANDO -----------------', 'yellow').bold())
             sleep(1)
-            print('----------------------- FIM ------------------------')
+            print(cs('----------------------- FIM ------------------------', 'yellow').bold())
             exit(0)
     elif escolha == 7 and admin == 2:
         pagar_fatura()
-    elif escolha == 8 and admin ==2:
-        print('----------------- SISTEMA FECHANDO -----------------')
+    elif escolha == 8 and admin == 2:
+        print(cs('----------------- SISTEMA FECHANDO -----------------', 'yellow').bold())
         sleep(1)
-        print('----------------------- FIM ------------------------')
+        print(cs('----------------------- FIM ------------------------', 'yellow').bold())
         exit(0)
     else:
-        print('>>> ERRO: OPÇÃO INVÁLIDA, TENTE NOVAMENTE! <<<')
+        print(cs('>>> ERRO: OPÇÃO INVÁLIDA, TENTE NOVAMENTE! <<<', 'red').bold())
         sleep(1)
         menu()
 
 
+# --------------------------------------------- FUNÇÕES DO MENU --------------------------------------------------------
 def criar_conta() -> None:
-    print('\n-------------------------- Criando conta --------------------------')
+    """Cria um objeto do tipo Cliente e um objeto do tipo Conta"""
+    print(cs('\n-------------------------- Criando conta --------------------------', 'yellow').bold())
     nome: str = str(input('>>> Digite o nome: '))
     email: str = str(input('>>> Digite o e-mail: '))
     cpf: str = str(input('>>> Digite o CPF: '))
@@ -139,18 +150,21 @@ def criar_conta() -> None:
         conta: Conta = Conta(cliente)
         numero_sua_conta = conta.numero
         contas.append(conta)
-        print('---- CONTA CADASTRADA COM SUCESSO\n')
+        print(cs('---- CONTA CADASTRADA COM SUCESSO\n', 'green').bold())
         print(cliente)
         print(conta)
         sleep(1)
         menu()
     except:
-        print('### OCORREU ALGUM ERRO ###')
+        print(cs('### OCORREU ALGUM ERRO ###', 'red').bold())
         sleep(1)
         criar_conta()
 
 
 def efetuar_saque() -> None:
+    """Chama a função sacar()
+    CLIENTES: só podem sacar da própria conta
+    ADMINISTRADORES: podem sacar de qualquer conta"""
     if len(contas) > 0:
         numero: int = int(input('>>> Informe o número da sua conta: '))
         conta: Conta = buscar_conta_por_codigo(numero)
@@ -163,8 +177,8 @@ def efetuar_saque() -> None:
                     sleep(1)
                     menu()
                 else:
-                    print('### VOCÊ SÓ PODE SACAR DA SUA CONTA ###')
-                    print(f'### O NÚMERO DA SUA CONTA É {numero_sua_conta} ###')
+                    print(cs('### VOCÊ SÓ PODE SACAR DA SUA CONTA ###', 'red').bold())
+                    print(cs(f'### O NÚMERO DA SUA CONTA É {numero_sua_conta} ###', 'red').bold())
                     sleep(1)
                     menu()
             if admin == 2:
@@ -173,17 +187,18 @@ def efetuar_saque() -> None:
                 sleep(1)
                 menu()
         else:
-            print(f'Não foi encontrada a conta com número: {numero}')
+            print(cs(f'Não foi encontrada a conta com número: {numero}', 'red').bold())
             sleep(1)
             menu()
 
     else:
-        print('### Ainda não existem contas cadastradas ###')
+        print(cs('### Ainda não existem contas cadastradas ###', 'red').bold())
         sleep(1)
         menu()
 
 
 def efetuar_deposito() -> None:
+    """Chama a função depositar() e tem permissões iguais para CLIENTES e ADMINISTRADORES"""
     if len(contas) > 0:
         numero: int = int(input('>>> Informe o código da conta: '))
         conta: Conta = buscar_conta_por_codigo(numero)
@@ -194,17 +209,20 @@ def efetuar_deposito() -> None:
             sleep(1)
             menu()
         else:
-            print(f'Não foi encontrada a conta com número: {numero}')
+            print(cs(f'Não foi encontrada a conta com número: {numero}', 'red').bold())
             sleep(1)
             menu()
 
     else:
-        print('### Ainda não existem contas cadastradas ###')
+        print(cs('### Ainda não existem contas cadastradas ###', 'red').bold())
         sleep(1)
         menu()
 
 
 def efetuar_transferencia() -> None:
+    """Chama a função transferir()
+    CLIENTES: só podem transferir da própria conta para uma conta destino
+    ADMINISTRADOS: podem transferir de qualquer conta para qualquer conta"""
     if len(contas) > 0:
         numero_o: int = int(input('>>> Informe o número da sua conta: '))
         conta_o: Conta = buscar_conta_por_codigo(numero_o)
@@ -219,12 +237,12 @@ def efetuar_transferencia() -> None:
                         sleep(1)
                         menu()
                     else:
-                        print('### CONTA DESTINO NÃO EXISTE ###')
+                        print(cs('### CONTA DESTINO NÃO EXISTE ###', 'red').bold())
                         sleep(1)
                         menu()
                 else:
-                    print('### VOCÊ SÓ PODE TRANSFERIR DA SUA CONTA ###')
-                    print(f'### O NÚMERO DA SUA CONTA É {numero_sua_conta} ###')
+                    print(cs('### VOCÊ SÓ PODE TRANSFERIR DA SUA CONTA ###', 'red').bold())
+                    print(cs(f'### O NÚMERO DA SUA CONTA É {numero_sua_conta} ###', 'red').bold())
                     sleep(1)
                     menu()
             if admin == 2:
@@ -236,52 +254,61 @@ def efetuar_transferencia() -> None:
                     sleep(1)
                     menu()
                 else:
-                    print('### CONTA DESTINO NÃO EXISTE ###')
+                    print(cs('### CONTA DESTINO NÃO EXISTE ###', 'red').bold())
                     sleep(1)
                     menu()
         else:
-            print('### A CONTA INFORMADA NAO EXISTE ###')
+            print(cs('### A CONTA INFORMADA NAO EXISTE ###', 'red').bold())
             sleep(1)
             menu()
     else:
-        print('### Ainda não existem contas cadastradas ###')
+        print(cs('### Ainda não existem contas cadastradas ###', 'red').bold())
         sleep(1)
         menu()
 
 
 def aumentar_limite() -> None:
+    """Chama a função altera_limite() e passa os parâmetros definidos pelo usuário
+    CLIENTES: Só podem aumentar o limite da própria conta e se a fatura estiver zerada
+    ADMINISTRADOS: Podem aumentar o limite de qualquer conta a qualquer momento"""
     if len(contas) > 0:
         numero: int = int(input('>>> Informe o número da sua conta: '))
         conta: Conta = buscar_conta_por_codigo(numero)
 
         if conta:
             if admin == 1:
-                if numero == numero_sua_conta:
-                    valor: float = float(input('>>> Informe o valor desejado: '))
-                    conta.altera_limite(valor)
-                    sleep(1)
-                    menu()
-                else:
-                    print('### VOCÊ SÓ PODE AUMENTAR O LIMITE DA SUA CONTA ###')
-                    print(f'### O NÚMERO DA SUA CONTA É {numero_sua_conta} ###')
-                    sleep(1)
-                    menu()
+                if (-1 * conta.fatura) == 0:
+                    if numero == numero_sua_conta:
+                        valor: float = float(input('>>> Informe o valor desejado: '))
+                        conta.altera_limite(valor)
+                        sleep(1)
+                        menu()
+                    else:
+                        print(cs('### VOCÊ SÓ PODE AUMENTAR O LIMITE DA SUA CONTA ###', 'red').bold())
+                        print(cs(f'### O NÚMERO DA SUA CONTA É {numero_sua_conta} ###', 'red').bold())
+                        sleep(1)
+                        menu()
+            else:
+                print(cs('### LIMITE NÃO PÔDE SER ALTERADO, PAGUE A FATURA ###', 'red').bold())
             if admin == 2:
                 valor: float = float(input('>>> Informe o valor desejado: '))
                 conta.altera_limite(valor)
                 sleep(1)
                 menu()
         else:
-            print(f'Não foi encontrada a conta com número: {numero}')
+            print(cs(f'Não foi encontrada a conta com número: {numero}', 'red').bold())
             sleep(1)
             menu()
     else:
-        print('### Ainda não existem contas cadastradas ###')
+        print(cs('### Ainda não existem contas cadastradas ###', 'red').bold())
         sleep(1)
         menu()
 
 
 def pagar_fatura() -> None:
+    """Chama a função pagar_fatura() do objeto conta
+    MODO CLIENTE: o usuário só poderá pagar a própria fatura
+    DMINISTRADORES: podem pagar qualquer fatura"""
     if len(contas) > 0:
         numero: int = int(input('>>> Informe o número da sua conta: '))
         conta: Conta = buscar_conta_por_codigo(numero)
@@ -293,8 +320,8 @@ def pagar_fatura() -> None:
                     sleep(1)
                     menu()
                 else:
-                    print('### VOCÊ SÓ PODE PAGAR A FATURA DA SUA CONTA ###')
-                    print(f'### O NÚMERO DA SUA CONTA É {numero_sua_conta} ###')
+                    print(cs('### VOCÊ SÓ PODE PAGAR A FATURA DA SUA CONTA ###', 'red').bold())
+                    print(cs(f'### O NÚMERO DA SUA CONTA É {numero_sua_conta} ###', 'red').bold())
                     sleep(1)
                     menu()
             if admin == 2:
@@ -302,16 +329,18 @@ def pagar_fatura() -> None:
                 sleep(1)
                 menu()
         else:
-            print(f'Não foi encontrada a conta com número: {numero}')
+            print(cs(f'Não foi encontrada a conta com número: {numero}', 'red').bold())
             sleep(1)
             menu()
     else:
-        print('### Ainda não existem contas cadastradas ###')
+        print(cs('### Ainda não existem contas cadastradas ###', 'red').bold())
         sleep(1)
         menu()
 
 
 def ver_conta() -> None:
+    """Mostra a conta de acordo com o número inserido
+    Somente ADMINISTRADORES podem ver todas as contas"""
     if len(contas) > 0:
         numero: int = int(input('>>> Informe o número da sua conta: '))
         conta: Conta = buscar_conta_por_codigo(numero)
@@ -324,8 +353,8 @@ def ver_conta() -> None:
                     sleep(1)
                     menu()
                 else:
-                    print('### VOCÊ SÓ PODE VER A SUA CONTA ###')
-                    print(f'### O NÚMERO DA SUA CONTA É {numero_sua_conta} ###')
+                    print(cs('### VOCÊ SÓ PODE VER A SUA CONTA ###', 'red').bold())
+                    print(cs(f'### O NÚMERO DA SUA CONTA É {numero_sua_conta} ###', 'red').bold())
                     sleep(1)
                     menu()
             if admin == 2:
@@ -334,26 +363,26 @@ def ver_conta() -> None:
                 sleep(1)
                 menu()
         else:
-            print(f'Não foi encontrada a conta com número: {numero}')
+            print(cs(f'Não foi encontrada a conta com número: {numero}', 'red').bold())
             sleep(1)
             menu()
 
     else:
-        print('### Ainda não existem contas cadastradas ###')
+        print(cs('### Ainda não existem contas cadastradas ###', 'red').bold())
         sleep(1)
         menu()
 
 
 def listar_contas() -> None:
     if len(contas) > 0:
-        print('--------------- LISTAGEM DE CONTAS ---------------')
+        print(cs('--------------- LISTAGEM DE CONTAS ---------------', 'yellow').bold())
         for conta in contas:
             print(conta)
             print('---------------------------------')
             sleep(1)
         menu()
     else:
-        print('### Ainda não existem contas cadastradas ###')
+        print(cs('### Ainda não existem contas cadastradas ###', 'red').bold())
         sleep(1)
         menu()
 
@@ -368,7 +397,9 @@ def buscar_conta_por_codigo(codigo: int) -> Conta:
     return c
 
 
+# ------------------------------------------ GERADORES DE DADOS/CONTAS -------------------------------------------------
 def gerar_dados():
+    """Gera valores para as varieveis que serão passadas como atributos em gerar_contas()"""
     nome = choice(['Marcelo', 'Maria', 'Rodolfo', 'Amanda', 'Gabriela',
                    'Manoel', 'Sabrina', 'Daniel', 'Bruna', 'Julio'])
     email = choice(['@gmail.com', '@yahoo.com', '@outlook.com'])
@@ -379,6 +410,8 @@ def gerar_dados():
 
 
 def gerar_contas(quant: int):
+    """Gera a quantidade de objetos do tipo Cliente
+     e objetos do tipo Conta que o usuário informar"""
     for x in range(quant):
         nome, email, cpf, data = gerar_dados()
         gc_cliente = Cliente(nome, email, cpf, data)
@@ -390,5 +423,6 @@ def gerar_contas(quant: int):
         sleep(1)
 
 
+# ---------------------------------------------- EXECUTA A APLICAÇÃO ---------------------------------------------------
 if __name__ == '__main__':
     main()
